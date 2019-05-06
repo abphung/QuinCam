@@ -1,0 +1,26 @@
+serial.serialutil.SerialException: read failed: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+
+termios.error: (22, 'Invalid argument')
+
+serial.serialutil.SerialException: [Errno 16] could not open port /dev/tty.QuinCam1-ESP32SPP: [Errno 16] Resource busy: '/dev/tty.QuinCam1-ESP32SPP'
+
+(<class 'OSError'>, OSError('cannot identify image file <_io.BytesIO object at 0x109fb82b0>',), <traceback object at 0x10a1f4448>)
+OSError('image file is truncated (13 bytes not processed)
+
+assertion "data != NULL" failed: file "/Users/ficeto/Desktop/ESP32/ESP32/esp-idf-public/components/bt/bluedroid/osi/list.c", line 138, function: list_append
+abort() was called at PC 0x4014603b on core 0
+
+Backtrace: 0x4008e980:0x3ffd0660 0x4008ebb1:0x3ffd0680 0x4014603b:0x3ffd06a0 0x400d837e:0x3ffd06d0 0x400dfa6e:0x3ffd06f0 0x400dfba7:0x3ffd0720 0x400d8a1d:0x3ffd0740 0x40090d89:0x3ffd0770
+
+Rebooting...
+ets Jun  8 2016 00:22:57
+
+rst:0xc (SW_CPU_RESET),boot:0x12 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:1
+load:0x3fff0018,len:4
+load:0x3fff001c,len:1100
+load:0x40078000,len:10088
+load:0x40080400,len:6380
+entry 0x400806a4
