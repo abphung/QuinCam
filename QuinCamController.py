@@ -1,4 +1,5 @@
 from SerialTimer import SerialTimer
+from serial.tools import list_ports
 from PIL import Image
 import time
 import threading
@@ -33,18 +34,13 @@ def get_time():
 	return response
 	
 if __name__ == "__main__":
+	ports = list(list_ports.grep("QuinCam", True))
 	with ExitStack() as stack:
-		ser1 = stack.enter_context(SerialTimer('/dev/tty.QuinCam1-ESP32SPP', baudrate=115200, timeout=1))
-		ser2 = stack.enter_context(SerialTimer('/dev/tty.QuinCam2-ESP32SPP', baudrate=115200, timeout=1))
-		Camera(ser1).take_picture("Images/Cam1" + str(time.time()) + ".jpg")
-		Camera(ser2).take_picture("Images/Cam2" + str(time.time()) + ".jpg")
-	# with SerialTimer('/dev/tty.QuinCam2-ESP32SPP', baudrate=115200, timeout=1) as ser2:
-	# 	with SerialTimer('/dev/tty.QuinCam1-ESP32SPP', baudrate=115200, timeout=1) as ser1:	
-	# 		#perform action
-	# 		Camera(ser1).take_picture("Cam1" + str(time.time()) + ".jpg")
-	# 		Camera(ser2).take_picture("Cam2" + str(time.time()) + ".jpg")
-
-# 
-#     foo = stack.enter_context(open("foo.txt"))
-#     bar = stack.enter_context(open("bar.txt"))
-#     baz = stack.enter_context(open("baz.txt"))
+		#use call-in line(tty) instead of call-out line(cu)
+		devices = [port.device.replace("cu", "tty") for port in ports]
+		serials = [stack.enter_context(SerialTimer(device, baudrate=115200, timeout=1)) for device in devices]
+		cameras = map(Camera, serials)
+		call_time = time.time()
+		for camera in cameras:
+			threading.Timer(call_time - time.time(), camera.take_picture, ["Images/" + str(time.time()) + ".jpg"]).start()
+		input()
