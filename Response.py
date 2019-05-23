@@ -1,9 +1,10 @@
+from dataclasses import dataclass
 from ResponseStatus import ResponseStatus
+from time import time
 
+@dataclass
 class Response:
-
-	def __init__(self):
-		self.time = None
-		self.status = ResponseStatus.NotStarted
-		self.exception = None
-		self.content = None
+	response_time: time = None
+	status: ResponseStatus = ResponseStatus.NotStarted
+	exception: Exception = None
+	content: object = None

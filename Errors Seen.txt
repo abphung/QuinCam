@@ -24,3 +24,6 @@ load:0x3fff001c,len:1100
 load:0x40078000,len:10088
 load:0x40080400,len:6380
 entry 0x400806a4
+
+{'response_time': 0.0008161067962646484, 'status': <ResponseStatus.Failed: 3>, 'exception': SerialException('read failed: [Errno 9] Bad file descriptor'), 'content': None}
+{'response_time': 1.0856597423553467, 'status': <ResponseStatus.Failed: 3>, 'exception': OSError('cannot identify image file <_io.BytesIO object at 0x10e09a410>'), 'content': None}

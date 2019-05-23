@@ -20,7 +20,7 @@ int address = 0;
 //////////////////
 void InitializeBluetooth() {
   Serial.println("Initializing Bluetooth");
-  SerialBT.begin("QuinCam");
+  SerialBT.begin("QuinCam2");
   Serial.println("Finished Initializing Bluetooth");
 }
 
@@ -163,11 +163,12 @@ void take_picture() {
     Serial.printf("Camera Capture Failed");
     ESP_LOGE(TAG, "Camera Capture Failed");
   }
-  SerialBT.write((uint8_t*)(&fb->len), 4);
-  size_t bytes_wrote = SerialBT.write(fb->buf, fb->len);
+  size_t bytes_wrote;
+  bytes_wrote = SerialBT.write((uint8_t*)(&fb->len), 4);
+  bytes_wrote = SerialBT.write(fb->buf, fb->len);
   Serial.printf("Needed to write %d bytes to bluetooth serial\n", fb->len);
   Serial.printf("Wrote %d bytes to bluetooth serial\n", bytes_wrote);
-  //esp_camera_fb_return(fb);
+  esp_camera_fb_return(fb);
 }
 
 void TestBluetooth(char** argv) {
@@ -238,13 +239,15 @@ void loop() {
     }
     else if (!strcmp(argv[0], "set_pixformat")){
       //(int)argv[1]
-      sensor->set_pixformat(sensor, static_cast<pixformat_t>((int)argv[1]));
+      sensor->set_pixformat(sensor, static_cast<pixformat_t>(atoi(argv[1])));
     }
     else if (!strcmp(argv[0], "set_framesize")){
-      sensor->set_framesize(sensor, static_cast<framesize_t>((int)argv[1]));
+      Serial.printf("Setting new framesize");
+      sensor->set_framesize(sensor, static_cast<framesize_t>(atoi(argv[1])));
+      //get_framesize()
     }
     else if (!strcmp(argv[0], "set_gainceiling")){
-      sensor->set_gainceiling(sensor, static_cast<gainceiling_t>((int)argv[1]));
+      sensor->set_gainceiling(sensor, static_cast<gainceiling_t>(atoi(argv[1])));
     }
     else if (!strcmp(argv[0], "take_picture"))
     {

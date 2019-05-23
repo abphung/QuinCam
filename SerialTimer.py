@@ -1,6 +1,6 @@
 from serial import Serial
 from time import time
-from SerialTimerReadData import SerialTimerReadData
+from SerialTimerData import SerialTimerData
 
 class SerialTimer(Serial):
 
@@ -8,7 +8,7 @@ class SerialTimer(Serial):
 		return (time(), self.write(data))
 
 	def timed_read(self, size=1):
-		return SerialTimerReadData(time(), self.read(size))
+		return SerialTimerData(time(), self.read(size))
 
 	def serial_read_int(self, bits):
 		read_data = self.timed_read(int(bits/8))

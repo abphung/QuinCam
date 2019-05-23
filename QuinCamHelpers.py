@@ -1,2 +1,2 @@
 def package(content):
-	return chr(len(content.split(" "))) + " " + content + chr(0)
+	return str.encode(chr(len(content.split(" "))) + " " + content + chr(0))

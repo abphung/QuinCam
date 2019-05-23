@@ -1,6 +1,6 @@
-from enum import Enum
+from enum import Enum, auto
 
 class ResponseStatus(Enum):
-	NotStarted = 0
-	Succeeded = 1
-	Failed = 2
+	NotStarted = auto()
+	Succeeded = auto()
+	Failed = auto()
