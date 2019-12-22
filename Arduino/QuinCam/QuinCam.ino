@@ -1,26 +1,29 @@
-//This example code is in the Public Domain (or CC0 licensed, at your option.)
-//By Evandro Copercini - 2018
-//
-//This example creates a bridge between Serial and Classical Bluetooth (SPP)
-//and also demonstrate that SerialBT have the same functionalities of a normal Serial
-
 #include "BluetoothSerial.h"
 #include <esp_camera.h>
 #include <EEPROM.h>
 #include <list>
 #include <map> 
 
-BluetoothSerial SerialBT;
+// Select camera model
+//#define CAMERA_MODEL_WROVER_KIT
+//#define CAMERA_MODEL_ESP_EYE
+//#define CAMERA_MODEL_M5STACK_PSRAM
+#define CAMERA_MODEL_M5STACK_WIDE//this works, but psram not found :(
+//#define CAMERA_MODEL_AI_THINKER
+//#define MY_CAMERA
+
+#include "camera_pins.h"
 
 /** the current address in the EEPROM (i.e. which byte we're going to write to next) **/
 int address = 0;
+BluetoothSerial SerialBT;
 
 //////////////////
 //Setup functions
 //////////////////
 void InitializeBluetooth() {
   Serial.println("Initializing Bluetooth");
-  SerialBT.begin("QuinCam2");
+  SerialBT.begin("QuinCam");
   Serial.println("Finished Initializing Bluetooth");
 }
 
@@ -29,6 +32,7 @@ void InitializeCamera() {
   camera_config_t config;
   config.ledc_channel = LEDC_CHANNEL_0;
   config.ledc_timer = LEDC_TIMER_0;
+  /*
   config.pin_d0 = 17;
   config.pin_d1 = 35;
   config.pin_d2 = 34;
@@ -45,15 +49,34 @@ void InitializeCamera() {
   config.pin_sscb_scl = 23;
   config.pin_pwdn = -1;
   config.pin_reset = -1;
+  */
+  config.pin_d0 = Y2_GPIO_NUM;
+  config.pin_d1 = Y3_GPIO_NUM;
+  config.pin_d2 = Y4_GPIO_NUM;
+  config.pin_d3 = Y5_GPIO_NUM;
+  config.pin_d4 = Y6_GPIO_NUM;
+  config.pin_d5 = Y7_GPIO_NUM;
+  config.pin_d6 = Y8_GPIO_NUM;
+  config.pin_d7 = Y9_GPIO_NUM;
+  config.pin_xclk = XCLK_GPIO_NUM;
+  config.pin_pclk = PCLK_GPIO_NUM;
+  config.pin_vsync = VSYNC_GPIO_NUM;
+  config.pin_href = HREF_GPIO_NUM;
+  config.pin_sscb_sda = SIOD_GPIO_NUM;
+  config.pin_sscb_scl = SIOC_GPIO_NUM;
+  config.pin_pwdn = PWDN_GPIO_NUM;
+  config.pin_reset = RESET_GPIO_NUM;
   config.xclk_freq_hz = 20000000;
   config.pixel_format = PIXFORMAT_JPEG;
 
   //init with high specs to pre-allocate larger buffers
   if (psramFound()) {
+    Serial.println("psram found");
     config.frame_size = FRAMESIZE_XGA;
     config.jpeg_quality = 10;
     config.fb_count = 2;
   } else {
+    Serial.println("psram not found");
     config.frame_size = FRAMESIZE_QVGA;//FRAMESIZE_SVGA;
     config.jpeg_quality = 12;
     config.fb_count = 1;
